@@ -38,16 +38,34 @@ const useStyles = makeStyles((theme) => ({
   },
   error: {
     verticalAlign: "middle",
-    marginLeft: "1.5em"
-  }
+    marginLeft: "1.5em",
+  },
 }));
+
+let isInitial = true;
 
 const Home = ({ isLoggedin, setIsLoggedin, logoutMsg }) => {
   const [username, setUsername] = useState("");
   const [showLogoutMsg, setShowLogoutMsg] = useState(false);
+
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   authenticate()
+  //     .then((data) => {
+  //       if (data) {
+  //         setUsername(data.user.name);
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
   useEffect(() => {
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
+
     authenticate()
       .then((data) => {
         if (data) {

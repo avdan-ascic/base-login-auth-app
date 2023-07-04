@@ -9,8 +9,24 @@ import { authenticate } from "./auth/api-auth";
 const MainRouter = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [logoutMsg, setLogoutMsg] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  // useEffect(() => {
+  //   authenticate()
+  //     .then((data) => {
+  //       if (data.user) {
+  //         setIsLoggedin(true);
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+      return;
+    }
+
     authenticate()
       .then((data) => {
         if (data.user) {
@@ -18,7 +34,7 @@ const MainRouter = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isMounted]);
 
   return (
     <>

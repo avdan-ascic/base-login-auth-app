@@ -6,7 +6,6 @@ const Header = ({ isLoggedin, setIsLoggedin, setLogoutMsg }) => {
   const handleLogout = () => {
     logout()
       .then((data) => {
-        console.log(data.message);
         setLogoutMsg(data.message);
       })
       .catch((err) => {
