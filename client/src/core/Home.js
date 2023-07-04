@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardActions, Icon, CardContent } from "@material-ui/core";
 import Button from "@mui/material/Button";
 import Typography from "@material-ui/core/Typography";
-import { authenticate } from "../auth/api-auth";
 
 import { Link } from "react-router-dom";
 
@@ -42,38 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let isInitial = true;
-
-const Home = ({ isLoggedin, setIsLoggedin, logoutMsg }) => {
-  const [username, setUsername] = useState("");
+const Home = ({ isLoggedin, setIsLoggedin, logoutMsg, username }) => {
   const [showLogoutMsg, setShowLogoutMsg] = useState(false);
 
   const classes = useStyles();
-
-  // useEffect(() => {
-  //   authenticate()
-  //     .then((data) => {
-  //       if (data) {
-  //         setUsername(data.user.name);
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-
-    authenticate()
-      .then((data) => {
-        if (data) {
-          setUsername(data.user.name);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   useEffect(() => {
     if (logoutMsg) {

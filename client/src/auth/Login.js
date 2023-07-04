@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ setIsLoggedin }) => {
+const Login = ({ setIsLoggedin, setUsername }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     email: "",
@@ -60,6 +60,7 @@ const Login = ({ setIsLoggedin }) => {
       email: values.email,
       password: values.password,
     };
+
     login(user)
       .then((data) => {
         if (data.error) {
@@ -68,8 +69,10 @@ const Login = ({ setIsLoggedin }) => {
             redirect: false,
             error: data.error,
           });
+          setIsLoggedin(false);
         } else {
           setIsLoggedin(true);
+          setUsername(data.user.name);
           setValues({ ...values, redirect: true, error: "" });
         }
       })

@@ -4,37 +4,22 @@ import Header from "./core/Header";
 import Home from "./core/Home";
 import Register from "./user/Register";
 import Login from "./auth/Login";
-import { authenticate } from "./auth/api-auth";
 
 const MainRouter = () => {
-  const [isLoggedin, setIsLoggedin] = useState(false);
-  const [logoutMsg, setLogoutMsg] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState(() => {
+    const storedIsLoggedin = sessionStorage.getItem("isLoggedIn");
+    return storedIsLoggedin ? JSON.parse(storedIsLoggedin) : false;
+  });
 
-  // useEffect(() => {
-  //   authenticate()
-  //     .then((data) => {
-  //       if (data.user) {
-  //         setIsLoggedin(true);
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  const [logoutMsg, setLogoutMsg] = useState("");
+  const [username, setUsername] = useState(() => {
+    return sessionStorage.getItem("username") || "";
+  });
 
   useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-      return;
-    }
-
-    authenticate()
-      .then((data) => {
-        if (data.user) {
-          setIsLoggedin(true);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [isMounted]);
+    sessionStorage.setItem("isLoggedIn", JSON.stringify(isLoggedin));
+    sessionStorage.setItem("username", username);
+  }, [isLoggedin, username]);
 
   return (
     <>
@@ -52,6 +37,7 @@ const MainRouter = () => {
               isLoggedin={isLoggedin}
               setIsLoggedin={setIsLoggedin}
               logoutMsg={logoutMsg}
+              username={username}
             />
           }
         />
@@ -59,7 +45,9 @@ const MainRouter = () => {
         <Route
           exact
           path="/login"
-          element={<Login setIsLoggedin={setIsLoggedin} />}
+          element={
+            <Login setIsLoggedin={setIsLoggedin} setUsername={setUsername} />
+          }
         />
       </Routes>
     </>
