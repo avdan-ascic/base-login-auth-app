@@ -8,6 +8,7 @@ import session from "express-session";
 
 import userRoutes from "./routes/user.routes";
 import "./passport";
+import config from "./config/config";
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: config.sessionSecret,
     saveUninitialized: false,
     resave: false,
     cookie: {
